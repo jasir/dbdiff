@@ -1,12 +1,25 @@
 /* globals describe it */
 var dedent = require('dedent')
 
-var conString1 = 'postgres://postgres:postgres@localhost/db1'
+// var conString1 = 'postgres://postgres:postgres@localhost:5434/db1'
+var conString1 = {
+    dialect: 'postgres',
+    user: 'postgres',
+    password: 'postgres',
+    database: 'db1',
+    port: 5433,
+    host: 'localhost',
+    dialectOptions: {
+      ssl: false
+    }
+
+}
 var conSettings2 = {
   dialect: 'postgres',
   user: 'postgres',
   password: 'postgres',
   database: 'db2',
+  port: 5433,
   host: 'localhost',
   dialectOptions: {
     ssl: false

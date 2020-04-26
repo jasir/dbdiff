@@ -51,6 +51,7 @@ class PostgresDialect {
         })
       ))
       .then((tables) => {
+        // console.log(tables.map(t => t.name))
         schema.tables = tables
         return client.find(`
           SELECT
@@ -129,6 +130,7 @@ class PostgresDialect {
           table.constraints.push(info)
           if (m > 0) {
             var substr = description.substring(m + 'REFERENCES'.length)
+            // console.log({ 'substr': substr })
 
             i = substr.indexOf('(')
             n = substr.indexOf(')')
@@ -146,6 +148,7 @@ class PostgresDialect {
             if (constraint.contype === 'f') {
               info.onActions = (substr.substr(n+1).trim())
             }
+            // console.log({ 'info': info })
           }
         })
         return client.find('SELECT * FROM information_schema.sequences ORDER BY sequence_schema, sequence_name')
