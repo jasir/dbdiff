@@ -37,14 +37,18 @@ class DbDiff {
     var diff1 = _.difference(columNames1, columNames2)
     var diff2 = _.difference(columNames2, columNames1)
 
-    diff1.forEach((columnName) => {
-      this._drop(`ALTER TABLE ${tableName} DROP COLUMN ${this._quote(columnName)};`)
-    })
+    if (diff1.length === 1 && diff2.length === 1) {
+      this._drop(`ALTER TABLE ${tableName} RENAME COLUMN ${this._quote(diff1[0])} TO ${this._quote(diff2[0])};`)
+    } else {
+      diff1.forEach((columnName) => {
+        this._drop(`ALTER TABLE ${tableName} DROP COLUMN ${this._quote(columnName)};`)
+      })
 
-    diff2.forEach((columnName) => {
-      var col = table2.columns.find((column) => column.name === columnName)
-      this._safe(`ALTER TABLE ${tableName} ADD COLUMN ${this._quote(columnName)} ${this._columnDescription(col)};`)
-    })
+      diff2.forEach((columnName) => {
+        var col = table2.columns.find((column) => column.name === columnName)
+        this._safe(`ALTER TABLE ${tableName} ADD COLUMN ${this._quote(columnName)} ${this._columnDescription(col)};`)
+      })
+    }
 
     var common = _.intersection(columNames1, columNames2)
     common.forEach((columnName) => {
