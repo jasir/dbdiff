@@ -38,14 +38,15 @@ describe('Postgresql', () => {
 
   it('should create a table', () => {
     var commands1 = []
-    var commands2 = ['CREATE TABLE users (email VARCHAR(255), tags varchar(255)[], num numeric(15, 10))']
+    var commands2 = ['CREATE TABLE users (email VARCHAR(255), tags varchar(255)[], num numeric(15, 10), num_no_scale numeric)']
     var expected = dedent`
       CREATE SCHEMA IF NOT EXISTS "public";
 
       CREATE TABLE "public"."users" (
         "email" character varying(255) NULL,
         "tags" varchar[] NULL,
-        "num" numeric(15,10) NULL
+        "num" numeric(15,10) NULL,
+        "num_no_scale" numeric NULL
       );
     `
     return utils.runAndCompare(commands1, commands2, expected)
